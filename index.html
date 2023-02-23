@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kalame yab</title>
+  <link rel="stylesheet" href="app.css" />
+  <!--script src="words.js" defer></script-->
+
+  <script src="app.js" defer></script>
+</head>
+
+<body>
+  <div class="wrp cols">
+    <div class="col col-form">
+      <div class="form-toggle"><svg class="icon" viewBox="0 0 256 256">
+          <rect width="256" height="256" fill="none" />
+          <polyline points="48 160 128 80 208 160" fill="none" stroke="currentColor" stroke-linecap="round"
+            stroke-linejoin="round" stroke-width="16" />
+        </svg></div>
+      <div class="form">
+
+        <div class="form-item">
+          <label class="form-laber">چند حرفی</label>
+          <div class="input-group">
+            <input id="length" type="number" class="form-input" value="5" min="2" max="15" />
+            <button class="btn" id="setLength">+</button>
+          </div>
+        </div>
+
+        <div class="form-item">
+          <label class="form-laber">حرف قرمز</label>
+          <div class="form-help">حرفی که در کلمه وجود ندارد</div>
+          <div class="input-group">
+            <input id="red-letter-name" max="1" type="text" pattern="[آ-ی]" class="form-input" placeholder="ا ب پ..." />
+            <button id="addRed" class="btn">+</button>
+          </div>
+        </div>
+
+        <div class="form-item">
+          <label class="form-laber">حرف زرد</label>
+          <div class="form-help">
+            حرفی که در کلمه وجود دارد اما محلش مشخص نیست
+          </div>
+          <div class="input-group">
+            <input id="yellow-letter-name" max="1" type="text" pattern="[آ-ی]" class="form-input"
+              placeholder="ا ب پ..." />
+            <button class="btn" id="addYellow">+</button>
+          </div>
+        </div>
+
+        <div class="form-item">
+          <label class="form-laber">حرف سبز</label>
+          <div class="form-help">حرفی که در کلمه وجود دارد و محلش مشخص است</div>
+          <div class="input-group">
+            <input id="green-letter-name" type="text" pattern="[آ-ی]" class="form-input" placeholder="ا ب پ..." />
+            <input id="green-letter-index" type="number" class="form-input" min="1" max="15" placeholder="کجاست؟" />
+            <button id="addGreen" class="btn">+</button>
+          </div>
+        </div>
+
+        <div class="form-item">
+          <label class="form-laber">ابتدا</label>
+          <div class="form-help">
+            با چه عبارتی شروع می‌شود
+          </div>
+          <div class="input-group">
+            <input id="startsWith" type="text" pattern="[آ-ی ]+" class="form-input" placeholder="ا ب پ..." />
+            <button class="btn" id="addStartsWith">+</button>
+          </div>
+        </div>
+        <div class="form-item">
+          <label class="form-laber">انتها</label>
+          <div class="form-help">
+            با چه عبارتی تمام می‌شود
+          </div>
+          <div class="input-group">
+            <input id="endsWith" type="text" pattern="[آ-ی ]+" class="form-input" placeholder="ا ب پ..." />
+            <button class="btn" id="addEndsWith">+</button>
+          </div>
+        </div>
+
+        <div class="form-item">
+          <label class="form-laber">فقط دارای</label>
+          <div class="form-help">
+            فقط دارای این حروف باشد. با فاصله جدا کنید.
+          </div>
+          <div class="input-group">
+            <input id="only-letters" type="text" pattern="[آ-ی ]+" class="form-input" placeholder="ا ب پ..." />
+            <button class="btn" id="addOnly">+</button>
+          </div>
+        </div>
+        <div class="form-item">
+          <label class="form-laber">آمیرزا</label>
+          <div class="form-help">
+            بخش مخصوص آمیرزا، حروف را با فاصله جدا کنید
+          </div>
+          <div class="input-group">
+            <input id="amirza-letters" type="text" pattern="[آ-ی ]+" class="form-input" placeholder="ا ب پ..." />
+            <button class="btn" id="addAmirza">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col result-col">
+      <div class="card header">
+        <span id="length"></span>
+        <div>
+          <button class="btn small rounded reset-button" data-id="moin">معین</button>
+          <button class="btn small rounded reset-button" data-id="names">نام‌ها</button>
+        </div>
+      </div>
+      <div id="result"></div>
+    </div>
+  </div>
+</body>
+
+</html>
