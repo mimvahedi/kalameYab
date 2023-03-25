@@ -49,7 +49,6 @@ function endsWith(i) {
   words = words.filter((w) => w.endsWith(i));
 }
 
-
 function onlyLetters(letters) {
   words = words.filter((word) => {
     for (let w of word) {
@@ -78,11 +77,42 @@ function amirza(letters1) {
   });
 }
 
+const perPage = 200;
+let nextStart = 0;
+let nextEnd = perPage;
+const result = document.querySelector("#result");
+
+function nextPage() {
+  for (let i = nextStart; i < nextEnd; i++) {
+    const w = document.createElement("div");
+    w.classList.add("word");
+    w.textContent = words[i];
+    result.appendChild(w);
+  }
+  nextStart = nextEnd;
+  nextEnd = nextStart + perPage;
+}
+
+function onScrollNextPage() {
+  function isElementInViewport(el) {
+    return (
+      el.getBoundingClientRect().bottom <=
+      (window.innerHeight || document.documentElement.clientHeight)
+    );
+  }
+  if (isElementInViewport(result.querySelector(":last-child"))) {
+    nextPage();
+  }
+}
+
 function view() {
   document.querySelector("#length").textContent = words.length.toLocaleString();
-  document.querySelector("#result").innerHTML = words
-    .map((w) => `<div class="word">${w}</div>`)
-    .join("");
+  result.innerHTML = "";
+  nextStart = 0;
+  nextEnd = perPage;
+  nextPage();
+  result.addEventListener("scroll", onScrollNextPage);
+  onScrollNextPage();
 }
 
 document.querySelector("#addRed").onclick = () => {
@@ -119,11 +149,10 @@ document.querySelector("#addEndsWith").onclick = () => {
   endsWith(document.querySelector("#endsWith").value);
 };
 
-
 document.querySelectorAll(".btn").forEach((btn) => {
   btn.addEventListener("click", view);
 });
 
-document.querySelector(".form-toggle").addEventListener("click", ()=>{
-  document.body.classList.toggle("view-form")
+document.querySelector(".form-toggle").addEventListener("click", () => {
+  document.body.classList.toggle("view-form");
 });
