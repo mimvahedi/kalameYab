@@ -79,7 +79,7 @@ function amirza(letters1) {
 
 const perPage = 200;
 let nextStart = 0;
-let nextEnd = perPage;
+let nextEnd = Math.min(perPage,words.length);
 const result = document.querySelector("#result");
 
 function nextPage() {
@@ -90,7 +90,7 @@ function nextPage() {
     result.appendChild(w);
   }
   nextStart = nextEnd;
-  nextEnd = nextStart + perPage;
+  nextEnd = Math.min(nextEnd + perPage,words.length);
 }
 
 function onScrollNextPage() {
@@ -106,12 +106,15 @@ function onScrollNextPage() {
 }
 
 function view() {
+  result.removeEventListener("scroll", onScrollNextPage);
+  window.removeEventListener("scroll", onScrollNextPage);
   document.querySelector("#length").textContent = words.length.toLocaleString();
   result.innerHTML = "";
   nextStart = 0;
   nextEnd = perPage;
   nextPage();
   result.addEventListener("scroll", onScrollNextPage);
+  window.addEventListener("scroll", onScrollNextPage);
   onScrollNextPage();
 }
 
