@@ -1,27 +1,57 @@
 "use strict";
 
-let fetchWords = async (url) => {
-  let d = await fetch(url);
-  let e = await d.text();
-  let f = await e.split("\n");
-  return f;
-};
-let moinWords = fetchWords("./lists/Moin_dictionary_words.txt").then(
-  (d) => (moinWords = d)
-);
-let names = fetchWords("./lists/farsi_names.txt").then((d) => (names = d));
+let lists = [
+  {
+    "name": "دهخدا",
+    "id": "dehkhoda",
+    "link": "./lists/dehkhoda.txt",
+  },
+  {
+    "name": "معین",
+    "id": "moin",
+    "link": "./lists/Moin_dictionary_words.txt",
+  },
+  {
+    "name": "نام‌ها",
+    "id": "names",
+    "link": "./lists/farsi_names.txt",
+  },
+]
 
-let words = moinWords;
+let wordsLists = {}
+
+function getList(id) {
+  if (wordsLists[id]) return wordsLists[id]
+  else if (localStorage.getItem(id)) {
+    let parsed = JSON.parse(localStorage.getItem(id))
+    wordsLists.id = parsed
+    return parsed
+  } else {
+    let list = lists.find(l => l.id === id)
+    if (!list) throw new Error("List not found")
+    try {
+      fetch(list.link).then(r => r.text()).then(t => {
+        let words = t.split("\n")
+        wordsLists[id] = words
+        localStorage.setItem(id, JSON.stringify(words))
+      })
+    } catch (e) {
+      throw e
+    }
+  }
+}
+
+let words = getList("dehkhoda");
+const perPage = 200;
+let nextStart = 0;
+let nextEnd = Math.min(perPage, words.length);
+const result = document.querySelector("#result");
 
 document.querySelectorAll(".reset-button").forEach((btn) => {
   let id = btn.dataset.id;
   btn.addEventListener("click", () => {
-    if (id === "moin") {
-      words = moinWords;
-    }
-    if (id === "names") {
-      words = names;
-    }
+    words = getList(id);
+    view()
   });
 });
 
@@ -50,14 +80,8 @@ function endsWith(i) {
 }
 
 function onlyLetters(letters) {
-  words = words.filter((word) => {
-    for (let w of word) {
-      if (!letters.includes(w)) {
-        return false;
-      }
-    }
-    return true;
-  });
+  words = words.filter((word) => word.split("").every(w => letters.includes(w))
+  );
 }
 
 function amirza(letters1) {
@@ -68,19 +92,14 @@ function amirza(letters1) {
         return false;
       } else {
         letters = [
-          ...letters.slice(undefined, letters.indexOf(w)),
-          ...letters.slice(letters.indexOf(w) + 1, undefined),
+          ...letters.slice(0, letters.indexOf(w)),
+          ...letters.slice(letters.indexOf(w) + 1),
         ];
       }
     }
     return true;
   });
 }
-
-const perPage = 200;
-let nextStart = 0;
-let nextEnd = Math.min(perPage,words.length);
-const result = document.querySelector("#result");
 
 function nextPage() {
   for (let i = nextStart; i < nextEnd; i++) {
@@ -90,7 +109,7 @@ function nextPage() {
     result.appendChild(w);
   }
   nextStart = nextEnd;
-  nextEnd = Math.min(nextEnd + perPage,words.length);
+  nextEnd = Math.min(nextEnd + perPage, words.length);
 }
 
 function onScrollNextPage() {
@@ -108,7 +127,7 @@ function onScrollNextPage() {
 function view() {
   result.removeEventListener("scroll", onScrollNextPage);
   window.removeEventListener("scroll", onScrollNextPage);
-  document.querySelector("#length").textContent = words.length.toLocaleString();
+  document.querySelector("#length").dataset.length = 12 || words.length.toLocaleString()
   result.innerHTML = "";
   nextStart = 0;
   nextEnd = perPage;
