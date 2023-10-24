@@ -4,12 +4,12 @@
 body {
   margin: 0;
   padding: 1rem;
-  font-family: sahel, "estedad", "b yekan", System;
+  font-family: vazirmatn, vazir, sahel, "estedad", "b yekan", System;
   background: var();
-  --color-bg: #f1f6fb;
-  --color-txt: #21282f;
-  --borderRradius: 8px;
-  --form-bg: #fffc;
+  --color-bg: hsl(220, 60%, 95%);
+  --color-txt: hsl(220, 60%, 10%);
+  --borderRradius: 10px;
+  --form-bg: #fff;
 
   --text-small: 0.75rem;
   background: var(--color-bg);
@@ -58,16 +58,37 @@ input {
   fill: red;
 }
 .form-toggle {
-  width: 1.5em;
-  height: 1.5em;
-  padding: 0.25em;
+  width: 2.5em;
+  height: 2.5em;
+  padding: 0.75em;
+  border-radius: 2.5em 2.5em 0 0;
   position: absolute;
   bottom: 100%;
-  margin-bottom: 1rem;
   right: 50%;
   transform: translateX(50%);
-  background: red;
+  background: var(--form-bg);
+  filter: drop-shadow(0 -8px 16px #0004);
 }
+
+.form-toggle::before,
+.form-toggle::after {
+  content: "";
+  position: absolute;
+  width: 2.5em;
+  height: 2.5em;
+  border-radius: 50%;
+}
+.form-toggle:before{
+  right: 100%;
+  bottom: 0;
+  box-shadow: var(--form-bg) 1em 1em;
+}
+.form-toggle::after{
+  left: 100%;
+  bottom: 0;
+  box-shadow: var(--form-bg) -1em 1em;
+}
+
 textarea:focus,
 input:focus {
   box-shadow: 0 0 0 0.125em var(--borderColor);
@@ -106,8 +127,8 @@ label {
 }
 input:invalid,
 input:invalid ~ .btn {
-  --borderColor: crimson;
-  --color-txt: crimson;
+  --borderColor: hsl(350, 60%, 50%);
+  --color-txt: hsl(350, 60%, 50%);
 }
 
 input:invalid ~ .btn {
@@ -143,15 +164,20 @@ input[type="number"] {
   border-end-start-radius: 0;
   border-start-start-radius: 0;
 }
+
+#length::before {
+  content: attr(data-length);
+}
+
 @media (prefers-color-scheme: dark) {
   body {
-    --color-txt: #f1f6fb;
-    --color-bg: #21282f;
-    --form-bg: #000c;
+    --color-txt: hsl(220, 60%, 90%);
+    --color-bg: hsl(220, 60%, 7.5%);
+    --form-bg: hsl(220, 60%, 9%);
   }
   .card,
   .form-item {
-    background: #0000000f;
+    background: var(--form-bg);
   }
 }
 @media (min-width: 40rem) {
@@ -232,7 +258,7 @@ input[type="number"] {
     transition: 250ms ease;
     transform: translateY(100%);
   }
-  
+
   .form {
     display: flex;
     overflow: auto;
