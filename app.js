@@ -34,6 +34,7 @@ function getList(id) {
         let words = t.split("\n")
         wordsLists[id] = words
         localStorage.setItem(id, JSON.stringify(words))
+        return words
       })
     } catch (e) {
       throw e
